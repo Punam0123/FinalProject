@@ -1,0 +1,14 @@
+flutter_frontend/build/
+
+flutter_frontend/ios/Flutter/  
+flutter_frontend/ios/.symlinks/  
+flutter_frontend/ios/Pods/  
+flutter_frontend/ios/.generated/  
+flutter_frontend/# Android Fgitlutter-specific files  
+flutter_frontend/.android/  
+
+flutter_frontend/.gradle/ 
+flutter_frontend/.dart_tool/ 
+Backend/venv/
+
+flutter_frontend/android/
