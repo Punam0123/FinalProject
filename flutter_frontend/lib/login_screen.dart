@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart1_parking_connect_application/booking_page.dart';
 import 'home_screen.dart'; // Import the home page
 import 'package:smart1_parking_connect_application/reg_screen.dart'; // Import the signup page
+import 'package:shared_preferences/shared_preferences.dart';
+import 'forgot_password.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -13,35 +16,37 @@ class LoginScreen extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
 
     Future<void> _loginUser() async {
-      String email = emailController.text;
-      String password = passwordController.text;
-
-      if (email.isEmpty || password.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please enter both email and password")),
-        );
-        return;
-      }
-
-      const String apiUrl = "http://127.0.0.1:8000/api/auth/login/"; // Your API endpoint here
+      const String apiUrl = "http://10.0.2.2:8000/api/auth/login/";
 
       try {
         final response = await http.post(
           Uri.parse(apiUrl),
           headers: {"Content-Type": "application/json"},
-          body: jsonEncode({"email": email, "password": password}),
+          body: jsonEncode({
+            "username": emailController.text,
+            "password": passwordController.text,
+          }),
         );
+
+        print("Response status: ${response.statusCode}");
+        print("Response body: ${response.body}");
 
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
+          String token = data['token'];
+
+          // Save token to SharedPreferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', token);
+
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Login Successful!")),
+            SnackBar(content: Text("Login Successful!")),
           );
-          
-          // Navigate to HomeScreen after successful login
+
+          // Navigate to HomeScreen
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => BookingPage()),
           );
         } else {
           final errorData = jsonDecode(response.body);
@@ -50,6 +55,7 @@ class LoginScreen extends StatelessWidget {
           );
         }
       } catch (e) {
+        print("Error: $e");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error: $e")),
         );
@@ -122,7 +128,14 @@ class LoginScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {}, // Forgot password functionality
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen()),
+                          );
+                        }, // Forgot password functionality
                         child: const Text("Forgot Password?",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
