@@ -66,9 +66,16 @@ class BookedSlotsView(generics.ListAPIView):
 #         return Response(BookingSerializer(booking).data, status=status.HTTP_201_CREATED)
 
 
+from rest_framework.permissions import IsAuthenticated
+
 class BookSlotView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
     def post(self, request):
         user = request.user
+        if not user.is_authenticated:
+            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
+        
         slot_id = request.data.get("slot_id")
         start_time = request.data.get("start_time")
         end_time = request.data.get("end_time")
@@ -113,6 +120,7 @@ class BookSlotView(APIView):
             "message": "Proceed to payment",
             "payment": PaymentSerializer(payment).data
         }, status=status.HTTP_200_OK)
+
 
 class UpdateSlotStatusView(APIView):
     def patch(self, request, slot_id):

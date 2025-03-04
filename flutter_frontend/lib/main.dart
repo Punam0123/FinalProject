@@ -6,9 +6,9 @@ import 'reg_screen.dart';  // Import the signup screen
 import 'home_screen.dart';  // Import home screen
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //   sta vtusBarColor: Colors.transparent,
+  // ));
   runApp(const MyApp());
 }
 
