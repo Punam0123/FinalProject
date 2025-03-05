@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart1_parking_connect_application/ipconfig.dart';
 
 class RegScreen extends StatefulWidget {
   const RegScreen({super.key});
@@ -29,8 +30,8 @@ class RegScreenState extends State<RegScreen> {
         return;
       }
 
-      const String apiUrl =
-          "http://10.0.2.2:8000/api/auth/signup/"; // Ensure correct IP
+       String apiUrl =
+          "${getIp()}/api/auth/signup/"; // Ensure correct IP
 
       try {
         final response = await http.post(

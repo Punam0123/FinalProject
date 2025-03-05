@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:http/http.dart' as http;
 import 'package:smart1_parking_connect_application/home_screen.dart';
-import 'dart:convert'; // For decoding JSON
+import 'dart:convert';
+
+import 'package:smart1_parking_connect_application/ipconfig.dart'; // For decoding JSON
 // import 'home_page.dart';
 // import 'profile_page.dart';
 
@@ -24,7 +26,7 @@ class _BookingPageState extends State<BookingPage> {
 
   // Fetch available parking slots from the backend
   Future<void> fetchAvailableSlots() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/slots/available/'));
+    final response = await http.get(Uri.parse('${getIp()}/api/slots/available/'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -48,7 +50,7 @@ class _BookingPageState extends State<BookingPage> {
     });
 
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/api/slots/book/'),
+      Uri.parse('${getIp()}/api/slots/book/'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'slot_id': _selectedSlot,

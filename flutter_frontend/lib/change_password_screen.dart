@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:smart1_parking_connect_application/ipconfig.dart';
+
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
@@ -35,7 +37,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       return;
     }
 
-    const String apiUrl = "http://10.0.2.2:8000/api/auth/change-password/";
+     String apiUrl = "${getIp()}/api/auth/change-password/";
 
     setState(() {
       _isLoading = true;

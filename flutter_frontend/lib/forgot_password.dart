@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'ipconfig.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -14,7 +16,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   bool _isLoading = false;
 
   Future<void> _resetPassword() async {
-    const String apiUrl = "http://10.0.2.2:8000/api/auth/forgot-password/";
+     String apiUrl = "${Ipconfig.getIp()}/api/auth/forgot-password/";
 
     setState(() {
       _isLoading = true;

@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:smart1_parking_connect_application/ipconfig.dart';
 
 class ParkingService {
-  static const String baseUrl = "http://127.0.0.1:8000/api/";
+    String baseUrl = "${getIp()}/api/";
 
   // Method to fetch parking spots
   Future<List<dynamic>> getParkingSpots() async {
